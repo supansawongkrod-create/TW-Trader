@@ -1,7 +1,7 @@
 <!doctype html><html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Taiwan Day Trade Radar V6</title><script src="https://cdn.jsdelivr.net/npm/chart.js"></script><style>
-:root{--bg:#0b0f17;--card:#121826;--card2:#171f30;--line:#273247;--text:#eef3fb;--muted:#91a0b7;--green:#2bd89f;--red:#ff6470;--amber:#ffbf47;--blue:#65a4ff}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,"Noto Sans Thai","Noto Sans TC",sans-serif}.wrap{max-width:1500px;margin:auto;padding:18px}.top{display:flex;justify-content:space-between;align-items:center;gap:16px}.top h1{margin:0;font-size:25px}.top p{margin:5px 0;color:var(--muted);font-size:13px}.live{padding:8px 12px;border:1px solid #235d4e;background:#102a25;border-radius:999px;color:var(--green);font-weight:800;font-size:12px}.modebar{display:flex;gap:8px;margin:14px 0 8px}.modebtn{border:1px solid var(--line);background:var(--card);color:var(--muted);padding:8px 14px;border-radius:999px;font-weight:900;cursor:pointer}.modebtn.on{background:#e9eef8;color:#111827;border-color:#e9eef8}.demo{margin:8px 0 14px;padding:9px 12px;border-radius:10px;background:#2b2414;border:1px solid #5b4920;color:#e7ca80;font-size:12px}.summary{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:12px}.stat{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:12px}.stat small{color:var(--muted)}.stat b{display:block;font-size:18px;margin-top:4px}.grid{display:grid;grid-template-columns:300px 1fr 310px;gap:12px}.panel{background:var(--card);border:1px solid var(--line);border-radius:15px;overflow:hidden}.panelhead{padding:14px;border-bottom:1px solid var(--line);font-weight:800}.list{padding:8px}.stock{padding:11px;border-radius:11px;margin-bottom:6px;cursor:pointer;border:1px solid transparent}.stock:hover,.stock.on{background:var(--card2);border-color:#33425e}.row{display:flex;justify-content:space-between;gap:8px}.sym{font-weight:900}.name{font-size:11px;color:var(--muted)}.price{font-weight:800}.up{color:var(--green)}.down{color:var(--red)}.score{font-size:11px;color:var(--muted);margin-top:5px}.badge{font-weight:900}.charttop{padding:15px;display:flex;justify-content:space-between;gap:12px;align-items:center}.charttitle b{font-size:22px}.charttitle span{color:var(--muted);font-size:12px}.times button{border:1px solid var(--line);background:var(--card2);color:var(--muted);padding:6px 9px;border-radius:8px}.times .on{color:white;border-color:#52698f}.chartwrap{height:420px;padding:0 12px 10px}.volumes{height:80px;padding:0 12px 12px}.signal{margin:0 14px 14px;padding:12px;border:1px solid #245846;background:#10271f;border-radius:11px}.signal strong{color:var(--green)}.right{padding:12px}.action{padding:14px;border-radius:12px;background:#10271f;border:1px solid #245846;margin-bottom:10px}.action .big{font-size:22px;font-weight:900;color:var(--green)}.box{padding:12px;background:var(--card2);border:1px solid var(--line);border-radius:11px;margin:8px 0}.box small{display:block;color:var(--muted);margin-bottom:5px}.box b{font-size:15px}.tradegrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.why{font-size:12px;line-height:1.55;color:#bac5d5}.money{font-size:22px!important}.risk{color:var(--red)}.target{color:var(--green)}.btn{width:100%;border:0;background:#e9eef8;color:#111827;font-weight:900;padding:10px;border-radius:9px;cursor:pointer;margin-top:8px}.foot{font-size:10px;color:#748299;line-height:1.5;margin-top:10px}@media(max-width:1050px){.grid{grid-template-columns:260px 1fr}.right{grid-column:1/-1}.summary{grid-template-columns:repeat(3,1fr)}}@media(max-width:700px){.grid{grid-template-columns:1fr}.summary{grid-template-columns:repeat(2,1fr)}.chartwrap{height:330px}}
-</style></head><body><div class="wrap"><div class="top"><div><h1>🇹🇼 Day Trade Radar · 40K</h1><p id="modeDesc">หุ้น ≤ NT$40 · เข้าและออกภายในวันเดียว</p></div><div class="live" id="clock">● TWSE LIVE</div></div><div class="modebar"><button id="mode40" class="modebtn on" onclick="setMode('under40')">≤ NT$40</button><button id="modeAll" class="modebtn" onclick="setMode('all')">ทั้งหมด</button></div><div class="demo" id="sourceBanner"><b>TWSE Live:</b> กำลังโหลดข้อมูลจริงจาก TWSE OpenAPI + MIS…</div><div class="summary"><div class="stat"><small>ผ่านเงื่อนไข</small><b>18</b></div><div class="stat"><small>น่าเข้าตอนนี้</small><b class="up">3 ตัว</b></div><div class="stat"><small>ตลาด</small><b class="up">ค่อนข้างบวก</b></div></div><div class="grid"><section class="panel"><div class="panelhead">🔥 อันดับตอนนี้</div><div class="list" id="list"></div></section><section class="panel"><div class="charttop"><div class="charttitle"><b id="title">2603 長榮</b><br><span id="subtitle">NT$38.60 · +2.10%</span></div><div class="times"><button class="on">1m</button><button>5m</button><button>15m</button></div></div><div class="chartwrap"><canvas id="priceChart"></canvas></div><div class="volumes"><canvas id="volChart"></canvas></div><div class="signal"><strong>● จุดที่ระบบกำลังมอง:</strong> <span id="signalText">ราคาเพิ่งเริ่มเร่งและมีคนเข้ามาเล่นมากกว่าปกติ ยังไม่ไกลจากจุดเข้า</span></div></section><aside class="panel right"><div class="action"><small>สถานะตอนนี้</small><div class="big" id="action">🟢 น่าเข้าตามแผน</div></div><div class="box"><small>ราคาตอนนี้</small><b class="money" id="now">NT$38.60</b></div><div class="tradegrid"><div class="box"><small>โซนเข้า</small><b id="entry">38.2–38.6</b></div><div class="box"><small>คะแนน</small><b id="score">93/100</b></div><div class="box"><small>ขายตัดขาดทุน</small><b class="risk" id="stop">37.7</b></div><div class="box"><small>เป้ากำไร</small><b class="target" id="target">39.3–39.8</b></div></div><div class="box"><small>ถ้าซื้อที่ราคาปัจจุบัน</small><div class="why" id="pl">ถึง 39.3 ≈ +NT$700<br>ลงถึง 37.7 ≈ −NT$900</div></div><button class="btn" onclick="simulateMinute()">จำลองผ่านไป +1 นาที</button><div class="foot">คะแนนเป็นคะแนนตามกฎของระบบ ไม่ใช่ความน่าจะเป็นที่จะกำไร · ราคาอันดับใช้ TWSE Live และกราฟย้อนหลังวันนี้ใช้ข้อมูล intraday ฟรี</div></aside></div></div><script>
-let stocks=[], selected=0, pc, vc, labels=[], prices=[], vols=[], lastPrices={}, scanMode='under40';
+:root{--bg:#0b0f17;--card:#121826;--card2:#171f30;--line:#273247;--text:#eef3fb;--muted:#91a0b7;--green:#2bd89f;--red:#ff6470;--amber:#ffbf47;--blue:#65a4ff}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,"Noto Sans Thai","Noto Sans TC",sans-serif}.wrap{max-width:1500px;margin:auto;padding:18px}.top{display:flex;justify-content:space-between;align-items:center;gap:16px}.top h1{margin:0;font-size:25px}.top p{margin:5px 0;color:var(--muted);font-size:13px}.live{padding:8px 12px;border:1px solid #235d4e;background:#102a25;border-radius:999px;color:var(--green);font-weight:800;font-size:12px}.modebar{display:flex;gap:8px;margin:14px 0 8px}.modebtn{border:1px solid var(--line);background:var(--card);color:var(--muted);padding:8px 14px;border-radius:999px;font-weight:900;cursor:pointer}.modebtn.on{background:#e9eef8;color:#111827;border-color:#e9eef8}.demo{margin:8px 0 14px;padding:9px 12px;border-radius:10px;background:#2b2414;border:1px solid #5b4920;color:#e7ca80;font-size:12px}.summary{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:12px}.stat{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:12px}.stat small{color:var(--muted)}.stat b{display:block;font-size:18px;margin-top:4px}.grid{display:grid;grid-template-columns:300px 1fr 310px;gap:12px}.panel{background:var(--card);border:1px solid var(--line);border-radius:15px;overflow:hidden}.panelhead{padding:14px;border-bottom:1px solid var(--line);font-weight:800}.list{padding:8px}.stock{padding:11px;border-radius:11px;margin-bottom:6px;cursor:pointer;border:1px solid transparent}.stock:hover,.stock.on{background:var(--card2);border-color:#33425e}.row{display:flex;justify-content:space-between;gap:8px}.sym{font-weight:900}.name{font-size:11px;color:var(--muted)}.price{font-weight:800}.up{color:var(--green)}.down{color:var(--red)}.score{font-size:11px;color:var(--muted);margin-top:5px}.badge{font-weight:900}.charttop{padding:15px;display:flex;justify-content:space-between;gap:12px;align-items:center}.charttitle b{font-size:22px}.charttitle span{color:var(--muted);font-size:12px}.times button{border:1px solid var(--line);background:var(--card2);color:var(--muted);padding:6px 9px;border-radius:8px;cursor:pointer}.times button:hover{border-color:#52698f;color:#fff}.times .on{color:white;border-color:#52698f}.chartwrap{height:420px;padding:0 12px 10px}.volumes{height:80px;padding:0 12px 12px}.signal{margin:0 14px 14px;padding:12px;border:1px solid #245846;background:#10271f;border-radius:11px}.signal strong{color:var(--green)}.right{padding:12px}.action{padding:14px;border-radius:12px;background:#10271f;border:1px solid #245846;margin-bottom:10px}.action .big{font-size:22px;font-weight:900;color:var(--green)}.box{padding:12px;background:var(--card2);border:1px solid var(--line);border-radius:11px;margin:8px 0}.box small{display:block;color:var(--muted);margin-bottom:5px}.box b{font-size:15px}.tradegrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.why{font-size:12px;line-height:1.55;color:#bac5d5}.money{font-size:22px!important}.risk{color:var(--red)}.target{color:var(--green)}.btn{width:100%;border:0;background:#e9eef8;color:#111827;font-weight:900;padding:10px;border-radius:9px;cursor:pointer;margin-top:8px}.foot{font-size:10px;color:#748299;line-height:1.5;margin-top:10px}@media(max-width:1050px){.grid{grid-template-columns:260px 1fr}.right{grid-column:1/-1}.summary{grid-template-columns:repeat(3,1fr)}}@media(max-width:700px){.grid{grid-template-columns:1fr}.summary{grid-template-columns:repeat(2,1fr)}.chartwrap{height:330px}}
+</style></head><body><div class="wrap"><div class="top"><div><h1>🇹🇼 Day Trade Radar · 40K</h1><p id="modeDesc">หุ้น ≤ NT$40 · เข้าและออกภายในวันเดียว</p></div><div class="live" id="clock">● TWSE LIVE</div></div><div class="modebar"><button id="mode40" class="modebtn on" onclick="setMode('under40')">≤ NT$40</button><button id="modeAll" class="modebtn" onclick="setMode('all')">ทั้งหมด</button></div><div class="demo" id="sourceBanner"><b>TWSE Live:</b> กำลังโหลดข้อมูลจริงจาก TWSE OpenAPI + MIS…</div><div class="summary"><div class="stat"><small>ผ่านเงื่อนไข</small><b>18</b></div><div class="stat"><small>น่าเข้าตอนนี้</small><b class="up">3 ตัว</b></div><div class="stat"><small>ตลาด</small><b class="up">ค่อนข้างบวก</b></div></div><div class="grid"><section class="panel"><div class="panelhead">🔥 อันดับตอนนี้</div><div class="list" id="list"></div></section><section class="panel"><div class="charttop"><div class="charttitle"><b id="title">2603 長榮</b><br><span id="subtitle">NT$38.60 · +2.10%</span></div><div class="times"><button id="tf1" class="on" type="button" onclick="setTimeframe(1)">1m</button><button id="tf5" type="button" onclick="setTimeframe(5)">5m</button><button id="tf15" type="button" onclick="setTimeframe(15)">15m</button></div></div><div class="chartwrap"><canvas id="priceChart"></canvas></div><div class="volumes"><canvas id="volChart"></canvas></div><div class="signal"><strong>● จุดที่ระบบกำลังมอง:</strong> <span id="signalText">ราคาเพิ่งเริ่มเร่งและมีคนเข้ามาเล่นมากกว่าปกติ ยังไม่ไกลจากจุดเข้า</span></div></section><aside class="panel right"><div class="action"><small>สถานะตอนนี้</small><div class="big" id="action">🟢 น่าเข้าตามแผน</div></div><div class="box"><small>ราคาตอนนี้</small><b class="money" id="now">NT$38.60</b></div><div class="tradegrid"><div class="box"><small>โซนเข้า</small><b id="entry">38.2–38.6</b></div><div class="box"><small>คะแนน</small><b id="score">93/100</b></div><div class="box"><small>ขายตัดขาดทุน</small><b class="risk" id="stop">37.7</b></div><div class="box"><small>เป้ากำไร</small><b class="target" id="target">39.3–39.8</b></div></div><div class="box"><small>ถ้าซื้อที่ราคาปัจจุบัน</small><div class="why" id="pl">ถึง 39.3 ≈ +NT$700<br>ลงถึง 37.7 ≈ −NT$900</div></div><button class="btn" onclick="simulateMinute()">จำลองผ่านไป +1 นาที</button><div class="foot">คะแนนเป็นคะแนนตามกฎของระบบ ไม่ใช่ความน่าจะเป็นที่จะกำไร · ราคาอันดับใช้ TWSE Live และกราฟย้อนหลังวันนี้ใช้ข้อมูล intraday ฟรี</div></aside></div></div><script>
+let stocks=[], selected=0, pc, vc, labels=[], prices=[], vols=[], lastPrices={}, scanMode='under40', timeframe=1, rawPoints=[];
 function status(x){if(x.score>=82&&x.changePct<6.5)return['🟢 น่าจับตา','#2bd89f'];if(x.changePct>6.5||x.score<60)return['🔴 อย่าไล่ราคา','#ff6470'];return['🟡 รอดูอีกนิด','#ffbf47']}
 function fmt(n){return Number(n||0).toLocaleString('en-US')}
 function reason(x){
@@ -16,6 +16,51 @@ function calcTrade(x){
   const stop=Math.max(0.01,x.price*0.985), target=x.price*1.025;
   return {entry:`${(x.price*.997).toFixed(2)}–${x.price.toFixed(2)}`,stop:+stop.toFixed(2),target:`${target.toFixed(2)}`};
 }
+function chartDirectionColor(){
+  const first=prices.find(v=>Number.isFinite(Number(v)));
+  const last=[...prices].reverse().find(v=>Number.isFinite(Number(v)));
+  if(first==null||last==null) return {line:'#ff6470',fill:'rgba(255,100,112,.06)'};
+  // Taiwan market convention: up = red, down = green.
+  return Number(last)>=Number(first)
+    ? {line:'#ff6470',fill:'rgba(255,100,112,.06)'}
+    : {line:'#2bd89f',fill:'rgba(43,216,159,.06)'};
+}
+function applyChartColor(){
+  if(!pc)return;
+  const c=chartDirectionColor();
+  pc.data.datasets[0].borderColor=c.line;
+  pc.data.datasets[0].backgroundColor=c.fill;
+}
+function aggregatePoints(points, mins){
+  if(mins===1) return points.slice();
+  const buckets=new Map();
+  for(const p of points){
+    const parts=String(p.time||'').split(':');
+    if(parts.length<2) continue;
+    const h=Number(parts[0]), m=Number(parts[1]);
+    if(!Number.isFinite(h)||!Number.isFinite(m)) continue;
+    const bm=Math.floor(m/mins)*mins;
+    const key=String(h).padStart(2,'0')+':'+String(bm).padStart(2,'0');
+    if(!buckets.has(key)) buckets.set(key,{time:key,price:Number(p.price)||0,volume:0});
+    const b=buckets.get(key); b.price=Number(p.price)||b.price; b.volume+=(Number(p.volume)||0);
+  }
+  return [...buckets.values()];
+}
+function rebuildChart(){
+  const pts=aggregatePoints(rawPoints,timeframe);
+  labels=pts.map(p=>p.time); prices=pts.map(p=>p.price); vols=pts.map(p=>p.volume);
+  if(pc){
+    pc.data.labels=labels; pc.data.datasets[0].data=prices;
+    vc.data.labels=labels; vc.data.datasets[0].data=vols;
+    applyChartColor(); pc.update('none'); vc.update('none');
+  }
+}
+function setTimeframe(mins){
+  timeframe=mins;
+  [1,5,15].forEach(v=>document.getElementById('tf'+v)?.classList.toggle('on',v===mins));
+  rebuildChart();
+}
+window.setTimeframe=setTimeframe;
 function renderList(){
   const list=document.getElementById('list');
   list.innerHTML=stocks.slice(0,10).map((x,i)=>`<div class="stock ${i===selected?'on':''}" onclick="selectStock(${i})"><div class="row"><div><div class="sym">#${i+1} ${x.code}</div><div class="name">${x.name}</div></div><div style="text-align:right"><div class="price">$${x.price.toFixed(2)}</div><div class="${x.changePct>=0?'up':'down'}">${x.changePct>=0?'+':''}${x.changePct.toFixed(2)}%</div></div></div><div class="score">คะแนน <b>${x.score}/100</b> · <span class="badge" style="color:${status(x)[1]}">${status(x)[0]}</span></div></div>`).join('');
@@ -31,15 +76,17 @@ function render(){
   renderList();
 }
 function initCharts(){
-  pc=new Chart(document.getElementById('priceChart'),{type:'line',data:{labels,datasets:[{data:prices,borderColor:'#2bd89f',borderWidth:2,pointRadius:0,tension:.18,fill:true,backgroundColor:'rgba(43,216,159,.06)'}]},options:{animation:false,responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{display:true,grid:{display:false},ticks:{color:'#91a0b7',maxTicksLimit:6,maxRotation:0,autoSkip:true}},y:{position:'right',ticks:{color:'#91a0b7'},grid:{color:'#202a3c'}}}}});
+  pc=new Chart(document.getElementById('priceChart'),{type:'line',data:{labels,datasets:[{data:prices,borderColor:'#ff6470',borderWidth:2,pointRadius:0,tension:.18,fill:true,backgroundColor:'rgba(255,100,112,.06)'}]},options:{animation:false,responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{display:true,grid:{display:false},ticks:{color:'#91a0b7',maxTicksLimit:6,maxRotation:0,autoSkip:true}},y:{position:'right',ticks:{color:'#91a0b7'},grid:{color:'#202a3c'}}}}});
   vc=new Chart(document.getElementById('volChart'),{type:'bar',data:{labels,datasets:[{data:vols,backgroundColor:'#3a4a65',borderWidth:0}]},options:{animation:false,responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{display:false},y:{display:false}}}});
 }
 function appendPoint(x){
   const time=(x.ts||new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit',second:'2-digit'})).slice(0,5);
-  if(labels.length && labels.at(-1)===time){prices[prices.length-1]=x.price;vols[vols.length-1]=x.volume}else{labels.push(time);prices.push(x.price);vols.push(x.volume);if(labels.length>80){labels.shift();prices.shift();vols.shift()}}
-  if(pc){pc.data.labels=labels;pc.data.datasets[0].data=prices;vc.data.labels=labels;vc.data.datasets[0].data=vols;pc.update('none');vc.update('none')}
+  const point={time,price:Number(x.price)||0,volume:Number(x.volume)||0};
+  if(rawPoints.length && rawPoints.at(-1).time===time) rawPoints[rawPoints.length-1]=point;
+  else { rawPoints.push(point); if(rawPoints.length>390) rawPoints.shift(); }
+  rebuildChart();
 }
-async function selectStock(i){selected=i;labels=[];prices=[];vols=[];render();await loadHistory(stocks[selected]);}
+async function selectStock(i){selected=i;labels=[];prices=[];vols=[];rawPoints=[];render();await loadHistory(stocks[selected]);}
 
 async function loadHistory(x){
   if(!x) return;
@@ -49,14 +96,10 @@ async function loadHistory(x){
     const j=await r.json();
     const pts=Array.isArray(j.points)?j.points:[];
     if(!pts.length) throw new Error('ยังไม่มีข้อมูลกราฟย้อนหลังวันนี้');
-    labels=pts.map(p=>p.time);
-    prices=pts.map(p=>p.price);
-    vols=pts.map(p=>p.volume);
-    pc.data.labels=labels; pc.data.datasets[0].data=prices;
-    vc.data.labels=labels; vc.data.datasets[0].data=vols;
-    pc.update('none'); vc.update('none');
+    rawPoints=pts.map(p=>({time:p.time,price:Number(p.price)||0,volume:Number(p.volume)||0}));
+    rebuildChart();
   }catch(e){
-    labels=[];prices=[];vols=[];
+    labels=[];prices=[];vols=[];rawPoints=[];
     pc.data.labels=[];pc.data.datasets[0].data=[];vc.data.labels=[];vc.data.datasets[0].data=[];
     pc.update('none');vc.update('none');
     document.getElementById('signalText').textContent='กราฟย้อนหลังโหลดไม่สำเร็จ: '+e.message;
@@ -65,7 +108,7 @@ async function loadHistory(x){
 
 function setMode(mode){
   if(scanMode===mode)return;
-  scanMode=mode; selected=0; stocks=[]; labels=[]; prices=[]; vols=[];
+  scanMode=mode; selected=0; stocks=[]; labels=[]; prices=[]; vols=[]; rawPoints=[];
   document.getElementById('mode40').classList.toggle('on',mode==='under40');
   document.getElementById('modeAll').classList.toggle('on',mode==='all');
   document.getElementById('modeDesc').textContent=mode==='under40'?'หุ้น ≤ NT$40 · เข้าและออกภายในวันเดียว':'สแกนหุ้นทุกช่วงราคา · เข้าและออกภายในวันเดียว';
